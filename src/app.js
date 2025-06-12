@@ -4,12 +4,14 @@ const { sequelize } = require('./models');
 
 const authRoutes = require('./routes/authRoutes');
 const merchantRoutes = require('./routes/merchantRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 
 const app = express();
 app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
 app.use('/merchants', merchantRoutes);
+app.use('/transactions', transactionRoutes);
 
 const port = process.env.PORT || 3000;
 
