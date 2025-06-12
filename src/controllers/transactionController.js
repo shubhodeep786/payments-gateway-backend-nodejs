@@ -1,26 +1,14 @@
-const { Transaction, TransactionAttempt, Refund, LedgerEntry } = require('../models');
+const { Transaction, Refund, LedgerEntry } = require('../models');
+const queue = require('../services/queue');
 const processor = require('../services/paymentProcessor');
 
 exports.createTransaction = async (req, res) => {
   try {
     const { amount, currency, provider } = req.body;
     const merchantId = req.user.merchant_id;
-    const txn = await Transaction.create({ merchant_id: merchantId, amount, currency, provider });
-    const attempt = await processor.process(txn, req.body);
-    txn.status = attempt.status;
-    txn.provider_txn_id = attempt.provider_txn_id;
-    await txn.save();
-    await TransactionAttempt.create({
-      transaction_id: txn.id,
-      attempt_no: 1,
-      status: attempt.status,
-      request_payload: attempt.request,
-      response_payload: attempt.response,
-    });
-    if (attempt.status === 'success') {
-      await LedgerEntry.create({ merchant_id: merchantId, transaction_id: txn.id, credit: amount, entry_type: 'payment' });
-    }
-    res.status(201).json(txn);
+    const txn = await Transaction.create({ merchant_id: merchantId, amount, currency, provider, status: 'pending' });
+    await queue.publish('transactions', { transactionId: txn.id, payload: req.body });
+    res.status(202).json({ id: txn.id, status: 'queued' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Transaction failed' });

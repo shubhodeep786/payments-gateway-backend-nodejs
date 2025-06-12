@@ -1,6 +1,6 @@
 # Payment Gateway Architecture
 
-This document outlines a microservices architecture for a scalable and secure payment gateway. It covers high-level components and a suggested relational database schema using PostgreSQL.
+This document outlines a microservices architecture for a scalable and secure payment gateway. Services communicate via a RabbitMQ message broker, and PostgreSQL is used for persistent storage.
 
 ## Services Overview
 
@@ -38,6 +38,9 @@ This document outlines a microservices architecture for a scalable and secure pa
 - **Webhook Listener**
   - Receives asynchronous events from payment providers.
   - Updates transaction status accordingly.
+- **Message Queue (RabbitMQ)**
+  - Decouples services using an AMQP-compatible broker.
+  - Transaction requests are published to a `transactions` queue and processed by dedicated workers.
 
 - **Reporting & Analytics Service**
   - Provides dashboards, settlement reports and revenue metrics.
