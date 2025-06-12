@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sequelize": "^6.37.7",
     "test": "echo \"Error: no test specified\" && exit 1",
     "worker": "node src/workers/transactionWorker.js"
   },
