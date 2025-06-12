@@ -172,4 +172,3 @@ The gateway can use multiple databases per service or a shared PostgreSQL instan
 6. **Analytics & Reporting**: The Reporting Service aggregates data from `transactions`, `refunds` and `ledger_entries` to generate dashboards and settlement reports.
 
 This schema and service layout provide a foundation for implementing the payment gateway in a microservices architecture.
-

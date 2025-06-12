@@ -1,5 +1,6 @@
 # Payments Gateway Backend
 
+
 This repository demonstrates a basic payment gateway backend written in Node.js using the MVC pattern. It contains a small Auth and Merchant service implemented with Express and Sequelize.
 
 See [docs/architecture.md](docs/architecture.md) for the overall microservices design and database schema.
@@ -43,4 +44,5 @@ Admins can issue a new API key for a merchant using `POST /merchants/:id/keys` a
 ### Transactions
 
 Merchants create transactions with `POST /transactions`. Requests are placed on a RabbitMQ queue and processed asynchronously by the worker. Refunds are handled synchronously via `POST /transactions/:id/refund`.
+
 
